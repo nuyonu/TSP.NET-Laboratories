@@ -17,17 +17,17 @@ namespace Laborator4NetCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AlbumArtist>()
-                .HasKey(aa => new { aa.AlbumId, aa.ArtistId });
+                .HasKey(a => new { a.AlbumId, a.ArtistId });
 
             modelBuilder.Entity<AlbumArtist>()
-                .HasOne(aa => aa.Artist)
+                .HasOne(a => a.Artist)
                 .WithMany(ar => ar.AlbumArtists)
-                .HasForeignKey(aa => aa.ArtistId);
+                .HasForeignKey(a => a.ArtistId);
 
             modelBuilder.Entity<AlbumArtist>()
-                .HasOne(aa => aa.Album)
+                .HasOne(a => a.Album)
                 .WithMany(al => al.AlbumArtists)
-                .HasForeignKey(aa => aa.AlbumId);
+                .HasForeignKey(a => a.AlbumId);
         }
     }
 }
