@@ -6,18 +6,16 @@ namespace PostComment
 {
     public partial class Post
     {
-        public bool AddPost()
+        public Post AddPost()
         {
             using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
             {
-                bool bResult = false;
-                if (this.PostId == 0)
+                if (PostId == 0)
                 {
                     var it = ctx.Entry<Post>(this).State = EntityState.Added;
                     ctx.SaveChanges();
-                    bResult = true;
                 }
-                return bResult;
+                return this;
             }
         }
         public Post UpdatePost(Post newPost)

@@ -9,33 +9,14 @@ namespace PostComment
     {
         public static bool AddPost(Post post)
         {
-            using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
-            {
-                bool bResult = false;
-                if (post.PostId == 0)
-                {
-                    var it = ctx.Entry<Post>(post).State = EntityState.Added;
-                    ctx.SaveChanges();
-                    bResult = true;
-                }
-                return bResult;
-            }
+            return post.AddPost() != null;
         }
         public static Post UpdatePost(Post newPost)
         {
             using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
             {
-                // Ce e in bd. PK nu poate fi modificata
                 Post oldPost = ctx.Posts.Find(newPost.PostId);
-                if (oldPost == null) // nu exista in bd
-                {
-                    return null;
-                }
-                oldPost.Description = newPost.Description;
-                oldPost.Domain = newPost.Domain;
-                oldPost.Date = newPost.Date;
-                ctx.SaveChanges();
-                return oldPost;
+                return oldPost?.UpdatePost(newPost);
             }
         }
         public static int DeletePost(int id)
@@ -92,37 +73,13 @@ namespace PostComment
 
         public static Post SubmitPost(Post post)
         {
-            using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
-            {
-                bool bResult = false;
-                if (post.PostId == 0)
-                {
-                    var it = ctx.Entry<Post>(post).State = EntityState.Added;
-                    ctx.SaveChanges();
-                    bResult = true;
-                }
-                return post;
-            }
+            return post.AddPost();
         }
 
         // Comment table
         public static bool AddComment(Comment comment)
         {
-            using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
-            {
-                bool bResult = false;
-                if (comment == null || comment.PostPostId == 0)
-                    return bResult;
-                if (comment.CommentId == 0)
-                {
-                    ctx.Entry<Comment>(comment).State = EntityState.Added;
-                    Post p = ctx.Posts.Find(comment.PostPostId);
-                    ctx.Entry<Post>(p).State = EntityState.Unchanged;
-                    ctx.SaveChanges();
-                    bResult = true;
-                }
-                return bResult;
-            }
+            return comment.AddComment() != null;
         }
 
         public static Comment SubmitComment(int postId, Comment comment)
@@ -132,21 +89,7 @@ namespace PostComment
 
         public static Comment SubmitComment(Comment comment)
         {
-            using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
-            {
-                bool bResult = false;
-                if (comment == null || comment.PostPostId == 0)
-                    return null;
-                if (comment.CommentId == 0)
-                {
-                    ctx.Entry<Comment>(comment).State = EntityState.Added;
-                    Post p = ctx.Posts.Find(comment.PostPostId);
-                    ctx.Entry<Post>(p).State = EntityState.Unchanged;
-                    ctx.SaveChanges();
-                    bResult = true;
-                }
-                return comment;
-            }
+            return comment.AddComment();
         }
 
         public static bool DeleteComment(int commentId)
@@ -159,18 +102,7 @@ namespace PostComment
 
         public static Comment UpdateComment(Comment oldComment, Comment newComment)
         {
-            using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
-            {
-                if (newComment.Text != null)
-                    oldComment.Text = newComment.Text;
-                if ((oldComment.PostPostId != newComment.PostPostId)
-               && (newComment.PostPostId != 0))
-                {
-                    oldComment.PostPostId = newComment.PostPostId;
-                }
-                ctx.SaveChanges();
-                return oldComment;
-            }
+            return oldComment.UpdateComment(newComment);
         }
 
         public static Comment UpdateComment(Comment newComment)
@@ -179,14 +111,9 @@ namespace PostComment
             {
                 Comment oldComment = ctx.Comments.Find(newComment.CommentId);
                 if (newComment.Text != null)
-                    oldComment.Text = newComment.Text;
-                if ((oldComment.PostPostId != newComment.PostPostId)
-               && (newComment.PostPostId != 0))
-                {
-                    oldComment.PostPostId = newComment.PostPostId;
-                }
-                ctx.SaveChanges();
-                return oldComment;
+                    return oldComment.UpdateComment(newComment);
+                else
+                    return oldComment;
             }
         }
         public static Comment GetCommentById(int id)

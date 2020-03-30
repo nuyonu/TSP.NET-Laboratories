@@ -5,23 +5,21 @@ namespace PostComment
 {
     public partial class Comment
     {
-        public bool AddComment()
+        public Comment AddComment()
         {
             using (ModelPostCommentContainer ctx = new ModelPostCommentContainer())
             {
-                bool bResult = false;
                 if (this == null || this.PostPostId == 0)
-                    return bResult;
+                    return null;
                 if (this.CommentId == 0)
                 {
                     ctx.Entry<Comment>(this).State = EntityState.Added;
                     Post p = ctx.Posts.Find(this.PostPostId);
                     ctx.Entry<Post>(p).State = EntityState.Unchanged;
                     ctx.SaveChanges();
-                    bResult = true;
                 }
-                return bResult;
             }
+            return this;
         }
         public Comment UpdateComment(Comment newComment)
         {
