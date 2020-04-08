@@ -14,12 +14,10 @@ namespace GrpcGreeterClient
 
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-            var httpClient = new HttpClient(httpClientHandler);
-            var channel = GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions { HttpClient = httpClient });
 
-            var client = new Greeter.GreeterClient(channel);
-            var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
-            Console.WriteLine("Greeting: " + reply.Message);
+            var client = new Multiply.MultiplyClient(GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions { HttpClient = new HttpClient(httpClientHandler) }));
+            var reply = await client.ComputeMultiplyAsync(new RequestedNumbers { FirstNumber = 5, SecondNumber = 5});
+            Console.WriteLine("Greeting: " + reply.Result);
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }

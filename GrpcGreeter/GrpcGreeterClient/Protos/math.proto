@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcGreeter";
+
+package Math;
+
+service Multiply {
+	rpc ComputeMultiply (RequestedNumbers) returns (MultiplyResult);
+}
+
+message RequestedNumbers {
+	int32 firstNumber = 1;
+	int32 secondNumber = 2;
+}
+
+message MultiplyResult {
+	int32 result = 1;
+}
