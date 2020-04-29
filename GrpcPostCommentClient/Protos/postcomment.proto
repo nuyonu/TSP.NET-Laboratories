@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "GrpcPostComment";
+
+service PostComment {
+  rpc AddPost (PostRequest) returns (PostResponse);
+  rpc GetAllPosts (google.protobuf.Empty) returns (PostsRespose);
+}
+
+message PostRequest {
+  string description = 1;
+  string domain = 2;
+  repeated CommentRequest comments = 3;
+}
+
+message CommentRequest {
+    string text = 1;
+}
+
+message PostsRespose {
+    repeated PostResponse posts = 1;
+}
+
+message PostResponse {
+  string postId = 1;
+  string description = 2;
+  string domain = 3;
+  google.protobuf.Timestamp date = 4;
+  repeated CommentResponse comments = 5;
+}
+
+message CommentResponse {
+    string commentId = 1;
+    string text = 2;
+}
