@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ModelPostComment.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelPostCommentStoreContainer">
+    <EntitySet Name="Posts" EntityType="ModelPostComment.Store.Posts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Comments" EntityType="ModelPostComment.Store.Comments" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PostComment" Association="ModelPostComment.Store.PostComment">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="PostId" />
+    </Key>
+    <Property Name="PostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Domain" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PostPostId" Type="int" Nullable="false" />
+    <Property Name="Post_PostId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PostComment">
+    <End Role="Post" Type="ModelPostComment.Store.Posts" Multiplicity="1" />
+    <End Role="Comment" Type="ModelPostComment.Store.Comments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="PostId" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="Post_PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ModelPostComment" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelPostCommentContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Posts" EntityType="ModelPostComment.Post" />
+          <EntitySet Name="Comments" EntityType="ModelPostComment.Comment" />
+          <AssociationSet Name="PostComment" Association="ModelPostComment.PostComment">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="Domain" Type="String" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="ModelPostComment.PostComment" FromRole="Post" ToRole="Comment" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="ModelPostComment.PostComment" FromRole="Comment" ToRole="Post" />
+          <Property Name="PostPostId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PostComment">
+          <End Type="ModelPostComment.Post" Role="Post" Multiplicity="1" />
+          <End Type="ModelPostComment.Comment" Role="Comment" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelPostCommentStoreContainer" CdmEntityContainer="ModelPostCommentContainer">
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelPostComment.Post)">
+        <MappingFragment StoreEntitySet="Posts">
+          <ScalarProperty Name="PostId" ColumnName="PostId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Domain" ColumnName="Domain" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelPostComment.Comment)">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="PostPostId" ColumnName="PostPostId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PostComment" TypeName="ModelPostComment.PostComment" StoreEntitySet="Comments">
+      <EndProperty Name="Post">
+        <ScalarProperty Name="PostId" ColumnName="Post_PostId" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

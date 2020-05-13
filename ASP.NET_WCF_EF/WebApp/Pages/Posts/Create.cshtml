@@ -1,0 +1,39 @@
+﻿@page
+@model WebApp.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create</h1>
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PostDTO.Domain" class="control-label"></label>
+                <input asp-for="PostDTO.Domain" class="form-control" />
+                <span asp-validation-for="PostDTO.Domain" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostDTO.Description" class="control-label"></label>
+                <input asp-for="PostDTO.Description" class="form-control" />
+                <span asp-validation-for="PostDTO.Description" class="textdanger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostDTO.Date" class="control-label"></label>
+                <input asp-for="PostDTO.Date" class="form-control" />
+                <span asp-validation-for="PostDTO.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

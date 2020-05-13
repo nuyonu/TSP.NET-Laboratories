@@ -1,0 +1,59 @@
+﻿@page
+@model WebApp.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Index</h1>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Posts[0].PostId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posts[0].Domain)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posts[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posts[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posts[0].Comments)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Posts)
+        {
+            <tr style="font-size:small">
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Domain)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments.Count)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
+                    <a asp-page="/Comments/List" asp-route-id="@item.PostId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a> |
+                    <a asp-page="/Comments/Create" asp-route-id="@item.PostId">Add a Comment</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

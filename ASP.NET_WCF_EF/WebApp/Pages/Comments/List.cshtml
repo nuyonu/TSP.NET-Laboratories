@@ -1,0 +1,43 @@
+﻿@page
+@model WebApp.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<h3>List Comments for: @ViewData["Post"]</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments[0].CommentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments[0].Text)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Comments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.CommentId">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.CommentId">Delete</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-page="/Posts/Index">Back to List</a>
+</div>
+
+
